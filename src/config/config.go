@@ -1,7 +1,7 @@
 // Copyright 2014 Erlend Johannessen.
 // Use of this source code is governed by a MIT-style
 // license that can be found in the LICENSE file.
- 
+
 package config
 
 import (
@@ -14,8 +14,9 @@ import (
 )
 
 type Config struct {
-	Hostname string
-	Port     int
+	Hostname        string
+	Port            int
+	DefaultDocument string
 }
 
 var configFilename = ""
@@ -52,7 +53,7 @@ func Load() Config {
 	// Read whole the file
 	var jsonstring, err = ioutil.ReadFile(configFilename)
 	if err != nil {
-		var c = Config{"localhost", 80}
+		var c = Config{"localhost", 80, "index.html"}
 		save(c)
 		return c
 	}

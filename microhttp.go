@@ -2,6 +2,8 @@
 // Use of this source code is governed by a MIT-style
 // license that can be found in the LICENSE file. package main
 
+package main
+
 import (
 	"fmt"
 	"log"
@@ -12,6 +14,7 @@ import (
 )
 
 var fullhostname = "localhost:80"
+var defaultDocument = "index.html"
 
 // ------------------------------------------
 // init
@@ -19,6 +22,7 @@ var fullhostname = "localhost:80"
 func init() {
 	var c = config.Load()
 	fullhostname = fmt.Sprintf("%s:%d", c.Hostname, c.Port)
+	defaultDocument = c.DefaultDocument
 }
 
 // ------------------------------------------
@@ -43,8 +47,8 @@ func mainHandler(w http.ResponseWriter, r *http.Request) {
 
 	var fileinfo, exists = exists(url)
 
-	if exists && fileinfo.IsDir() {
-		url += "/index.html"
+	if exists && fileinfo.IsDir() || url == "" {
+		url += "/" + defaultDocument
 	}
 
 	http.ServeFile(w, r, url)
